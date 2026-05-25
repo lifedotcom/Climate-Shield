@@ -216,6 +216,10 @@ source venv/bin/activate
 ```bash
 pip install -r requirements.txt
 ```
+> **Note:** Also install python-dotenv:
+> ```bash
+> pip install python-dotenv
+> ```
 
 ---
 
@@ -328,6 +332,7 @@ python -m http.server 8000
 ---
 
 # 🚀 Deployment on Render
+> **Note:** Ensure `gunicorn` is listed in `requirements.txt` before deploying.
 
 ## Build Command
 
@@ -398,7 +403,7 @@ Developed by Team Climate Shield.
 
 ### 🌟 Stay Connected
 - 📱 **Instagram**: [@vikrant.__07](https://www.instagram.com/vikrant.__07/)
-- 💼 **LinkedIn**: [Vikrant Kumar Mehta](www.linkedin.com/in/vikrant-kumar-mehta)
+- 💼 **LinkedIn**: [Vikrant Kumar Mehta](https://www.linkedin.com/in/vikrant-kumar-mehta)
 - 🐙 **GitHub**: [@Vikrant0207](https://github.com/Vikrant0207)
 
 ---
@@ -425,5 +430,4 @@ If this project helped you, please consider:
 - 💖 **Following** for more amazing projects
 - 🛠 **Contribute** improvements
 
----
 ---
