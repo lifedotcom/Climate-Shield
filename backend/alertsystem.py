@@ -556,8 +556,17 @@ def chatbot():
             "Climate change increases the frequency of extreme weather events.",
 
             "rain":
-            "Heavy rainfall may increase flood risks in vulnerable regions."
+            "Heavy rainfall may increase flood risks in vulnerable regions.",
 
+            "drought":
+            "Droughts occur when rainfall is significantly below normal levels. Conserve water and follow local water restrictions.",
+
+            "wildfire":
+            "Wildfires spread rapidly in hot, dry conditions. Follow evacuation orders and avoid smoke exposure.",
+
+            "landslide":
+            "Landslides can occur after heavy rainfall or earthquakes. Avoid steep slopes and follow local warnings."
+        
         }
 
         for key in responses:
@@ -578,7 +587,7 @@ def chatbot():
             "success": True,
 
             "response":
-            "ClimateBot is ready to help with floods, cyclones, heatwaves, and climate safety."
+            "ClimateBot is ready to help with floods, cyclones, heatwaves, droughts, wildfires, landslides, and climate safety."
 
         })
 
