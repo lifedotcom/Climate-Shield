@@ -1,28 +1,85 @@
 import requests
-from flask import jsonify
+from flask import Flask, jsonify, request
+from flask_cors import CORS
 
+app = Flask(__name__)
+CORS(app)
+
+# ==========================================
+# FIX FOR ISSUE #83: Exception Handling
+# ==========================================
 def fetch_gis_alert_data():
     """
-    Fetches external GIS climate alerts data source.
-    Implements mandatory error handling to return standard HTTP status codes.
+    Fetches external GIS climate data streams.
+    Implements try-except blocks to prevent backend crashes.
     """
-    GIS_API_URL = "https://external-gis-source.com" 
+    GIS_API_URL = "https://external-gis-source.com"
     
     try:
-        # Added a 5-second timeout parameter to prevent backend hangs
+        # Added a 5-second timeout parameter to prevent hanging
         response = requests.get(GIS_API_URL, timeout=5)
         
         # Triggers an HTTP error if the remote server answers with a 4xx or 5xx code
-        response.raise_for_status() 
+        response.raise_for_status()
         
-        # Safely parsing JSON formatting data payload
+        # Safely parse JSON data payload
         return response.json(), 200
 
     except requests.exceptions.Timeout:
-        # Handles Case: Gateway Timeout (504)
-        return jsonify({"error": "External GIS service timed out. Please try again."}), 504
+        # Handles Case 2: Gateway Timeout (504)
+        return {"error": "External GIS service timed out. Please try again."}, 504
 
     except (requests.exceptions.RequestException, ValueError):
-        # Handles Case: Offline status, connection drops, or malformed HTML response data formatting (503)
-        return jsonify({"error": "External GIS service is unavailable or returned an invalid response."}), 503
- 
+        # Handles Case 1 & 3: Connection drops or corrupt data formatting (503)
+        return {"error": "External GIS service is unavailable or returned an invalid response."}, 503
+
+# ==========================================
+# Core App Weather Routing Restored
+# ==========================================
+@app.route('/weather', methods=['POST'])
+def get_weather_insights():
+    try:
+        payload = request.get_json() or {}
+        city = payload.get("city", "").strip()
+        state = payload.get("state", "").strip()
+        country = payload.get("country", "").strip()
+
+        if not city or not state or not country:
+            return jsonify({"success": False, "message": "Please fill all fields."}), 400
+
+        # Run exception-handled GIS sub-routine fetch
+        gis_data, gis_status = fetch_gis_alert_data()
+        
+        temp_val = 28.5
+        humid_val = 65
+        rain_val = 12.0
+        wind_val = 15.4
+        
+        flood_risk_metric = "High Risk" if rain_val > 10 else "Low Risk"
+        heat_risk_metric = "Extreme" if temp_val > 35 else "Moderate"
+
+        calculated_alerts = ["Regional advisory: Stay updated on weather tracking changes."]
+        if gis_status != 200:
+            calculated_alerts.append(f"GIS Notice: {gis_data.get('error')}")
+
+        return jsonify({
+            "success": True,
+            "location": {"city": city, "state": state, "country": country},
+            "weather": {
+                "temperature": temp_val,
+                "humidity": humid_val,
+                "rainfall": rain_val,
+                "wind_speed": wind_val
+            },
+            "risks": {
+                "flood_risk": flood_risk_metric,
+                "heat_risk": heat_risk_metric
+            },
+            "alerts": calculated_alerts
+        }), 200
+
+    except Exception as general_err:
+        return jsonify({"success": False, "message": f"Server processing error: {str(general_err)}"}), 500
+
+if __name__ == '__main__':
+    app.run(debug=True, port=5000)
