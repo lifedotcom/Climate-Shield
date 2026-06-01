@@ -418,7 +418,7 @@ Developed by Team Climate Shield.
 
 - 💬 **Discussions**: [GitHub Discussions](https://github.com/thetechguardians/Climate-Shield/discussions)
 - 🐛 **Bug Reports**: [Open an Issue](https://github.com/thetechguardians/Climate-Shield/issues)
-- 📧 **Direct Contact**: Create an issue for any questions
+- 📧 **Discord**: [Join Discord Server](https://discord.gg/VH5MVsFdJF)
 
 ### 🌟 Stay Connected
 
