@@ -1,6 +1,7 @@
 import requests
 from flask import Flask, jsonify, request
-from flask_cors import CORS
+from flask_cors import CORS 
+import os
 
 app = Flask(__name__)
 CORS(app)
@@ -81,7 +82,6 @@ def get_weather_insights():
     except Exception as general_err:
         return jsonify({"success": False, "message": f"Server processing error: {str(general_err)}"}), 500
 
-        })
 
     except Exception as e:
 
@@ -99,27 +99,40 @@ def get_weather_insights():
 
 @app.route("/reverse-geocode", methods=["POST"])
 def reverse_geocode():
-
     try:
         data = request.get_json()
 
         latitude = data.get("latitude")
         longitude = data.get("longitude")
 
+        if not latitude or not longitude:
+            return jsonify({
+                "success": False,
+                "message": "Latitude and longitude are required."
+            })
+
         api_key = os.environ.get("OPENWEATHER_API_KEY")
 
-        url = "https://api.openweathermap.org/geo/1.0/reverse"
-
         response = requests.get(
-            url,
+            "https://api.openweathermap.org/geo/1.0/reverse",
             params={
                 "lat": latitude,
                 "lon": longitude,
                 "limit": 1,
                 "appid": api_key
             },
+            headers={
+                "User-Agent": "Mozilla/5.0"
+            },
             timeout=20
         )
+
+        if response.status_code != 200:
+            print(response.text)
+            return jsonify({
+                "success": False,
+                "message": "Reverse geocoding failed."
+            })
 
         result = response.json()
 
@@ -139,6 +152,7 @@ def reverse_geocode():
         })
 
     except Exception as e:
+        print("Reverse Geocoding Error:")
         print(str(e))
 
         return jsonify({

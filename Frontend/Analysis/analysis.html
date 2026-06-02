@@ -59,176 +59,96 @@
         <a class="nav-cta" href="#analysis-form">Analyze now</a>
       </nav>
 
-      <main class="analysis-layout">
-        <section class="analysis-hero">
-          <span class="eyebrow">Weather analysis workspace</span>
-          <h1>Check flood and heat risk for any location in seconds.</h1>
-          <p>
-            Enter a city, state, and country to pull live weather data,
-            summarize risk, and surface alerts in a clean, readable format.
-          </p>
+<main class="analysis-layout">
 
-          <div class="mini-stats">
-            <div>
-              <strong>Live</strong>
-              <span>weather fetch</span>
-            </div>
-            <div>
-              <strong>Fast</strong>
-              <span>risk scoring</span>
-            </div>
-            <div>
-              <strong>Clear</strong>
-              <span>alert feedback</span>
-            </div>
-          </div>
-        </section>
+    <section class="analysis-hero">
+        <span class="eyebrow">Weather analysis workspace</span>
+        <h1>Check flood and heat risk for any location in seconds.</h1>
+        <p>
+            Enter a city, state, and country to pull live weather data, summarize risk,
+            and surface alerts in a clean, readable format.
+        </p>
 
-        <section class="analysis-stack">
-          <div class="analysis-intro glass-card">
+        <div class="mini-stats">
+            <div>
+                <strong>Live</strong>
+                <span>weather fetch</span>
+            </div>
+            <div>
+                <strong>Fast</strong>
+                <span>risk scoring</span>
+            </div>
+            <div>
+                <strong>Clear</strong>
+                <span>alert feedback</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="analysis-stack">
+
+        <div class="analysis-intro glass-card">
             <div class="analysis-intro-copy">
-              <span class="analysis-label">Analysis workflow</span>
-              <h2>
-                One focused workspace for live weather, risk summaries, and
-                alerts.
-              </h2>
-              <p>
-                Use the form below to generate the report. The results panel
-                appears beneath it so the flow reads like a clean report.
-              </p>
+                <span class="analysis-label">Analysis workflow</span>
+                <h2>One focused workspace for live weather, risk summaries, and alerts.</h2>
+                <p>
+                    Use the form below to generate the report. The results panel appears beneath it so the flow reads like a clean report.
+                </p>
             </div>
 
             <div class="analysis-intro-meta">
-              <div>
-                <strong>Live fetch</strong>
-                <span>backend weather response</span>
-              </div>
-              <div>
-                <strong>Risk view</strong>
-                <span>flood and heat signals</span>
-              </div>
-              <div>
-                <strong>Alerts</strong>
-                <span>clear output for action</span>
-              </div>
+                <div>
+                    <strong>Live fetch</strong>
+                    <span>backend weather response</span>
+                </div>
+                <div>
+                    <strong>Risk view</strong>
+                    <span>flood and heat signals</span>
+                </div>
+                <div>
+                    <strong>Alerts</strong>
+                    <span>clear output for action</span>
+                </div>
             </div>
-          </div>
+        </div>
 
-          <div class="glass-card" id="analysis-form">
+        <div class="glass-card" id="analysis-form">
+
             <div class="header">
-              <div class="logo">⚡</div>
-              <h2>Climate Risk Analyzer</h2>
-              <p>
-                Search a location to generate the live weather and risk summary.
-              </p>
+                <div class="logo">⚡</div>
+                <h2>Climate Risk Analyzer</h2>
+                <p>Search a location to generate the live weather and risk summary.</p>
             </div>
 
             <div class="input-container">
-              <div class="input-group">
-                <label for="city">City</label>
-                <input type="text" id="city" placeholder="Enter city name" />
-              </div>
+                <div class="input-group">
+                    <label for="city">City</label>
+                    <input type="text" id="city" placeholder="Enter city name">
+                </div>
 
-              <div class="input-group">
-                <label for="state">State</label>
-                <input type="text" id="state" placeholder="Enter state" />
-              </div>
+                <div class="input-group">
+                    <label for="state">State</label>
+                    <input type="text" id="state" placeholder="Enter state">
+                </div>
 
-              <div class="input-group">
-                <label for="country">Country</label>
-                <input type="text" id="country" placeholder="Enter country" />
-              </div>
+                <div class="input-group">
+                    <label for="country">Country</label>
+                    <input type="text" id="country" placeholder="Enter country">
+                </div>
             </div>
 
             <div class="action-buttons">
-              <button onclick="getWeatherData()">Analyze Climate Risk</button>
+                <button onclick="getWeatherData()">Analyze Climate Risk</button>
+                <button type="button" onclick="useCurrentLocation()">Use Current Location</button>
+            </div>
 
-              <button onclick="useCurrentLocation()">
-                Use Current Location
-              </button>
-                <div class="mini-stats">
-                    <div>
-                        <strong>Live</strong>
-                        <span>weather fetch</span>
-                    </div>
-                    <div>
-                        <strong>Fast</strong>
-                        <span>risk scoring</span>
-                    </div>
-                    <div>
-                        <strong>Clear</strong>
-                        <span>alert feedback</span>
-                    </div>
-                </div>
-            </section>
+            <div id="loading" class="loading hidden">
+                Analyzing live weather data...
+            </div>
 
-            <section class="analysis-stack">
+            <div id="message-box" class="message-box hidden"></div>
 
-                <div class="analysis-intro glass-card">
-                    <div class="analysis-intro-copy">
-                        <span class="analysis-label">Analysis workflow</span>
-                        <h2>One focused workspace for live weather, risk summaries, and alerts.</h2>
-                        <p>
-                            Use the form below to generate the report. The results panel appears beneath it so the flow reads like a clean report.
-                        </p>
-                    </div>
-
-                    <div class="analysis-intro-meta">
-                        <div>
-                            <strong>Live fetch</strong>
-                            <span>backend weather response</span>
-                        </div>
-                        <div>
-                            <strong>Risk view</strong>
-                            <span>flood and heat signals</span>
-                        </div>
-                        <div>
-                            <strong>Alerts</strong>
-                            <span>clear output for action</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="glass-card" id="analysis-form">
-
-                    <div class="header">
-                        <div class="logo">⚡</div>
-                        <h2>Climate Risk Analyzer</h2>
-                        <p>Search a location to generate the live weather and risk summary.</p>
-                    </div>
-
-                    <div class="input-container">
-                        <div class="input-group">
-                            <label for="city">City</label>
-                            <input type="text"
-                                   id="city"
-                                   placeholder="Enter city name">
-                        </div>
-
-                        <div class="input-group">
-                            <label for="state">State</label>
-                            <input type="text"
-                                   id="state"
-                                   placeholder="Enter state">
-                        </div>
-
-                        <div class="input-group">
-                            <label for="country">Country</label>
-                            <input type="text"
-                                   id="country"
-                                   placeholder="Enter country">
-                        </div>
-                    </div>
-
-                    <button onclick="getWeatherData()">Analyze Climate Risk</button>
-
-                    <div id="loading" class="loading hidden">
-                        Analyzing live weather data...
-                    </div>
-
-                    <div id="message-box" class="message-box hidden"></div>
-
-                </div>
+        </div>
 
                 <div id="results" class="glass-card results-card hidden">
 
