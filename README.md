@@ -159,7 +159,7 @@ Climate-Shield/
 │   └── alertsystem.py
 │
 ├── Frontend/
-│   ├── Index.html
+│   ├── index.html
 │   ├── chatbot.js
 │   ├── script.js
 │   ├── style.css
@@ -178,6 +178,8 @@ Climate-Shield/
 ---
 
 # 🛠 Installation Guide
+
+## ⭐ Star the Repository
 
 ## 1️⃣ Clone Repository
 
@@ -250,7 +252,7 @@ http://127.0.0.1:5000
 Open:
 
 ```text
-Frontend/Index.html
+Frontend/index.html
 ```
 
 OR serve locally:
@@ -383,6 +385,21 @@ This project is licensed under the MIT License.
 # 👨‍💻 Authors
 
 Developed by Team Climate Shield.
+- [@Vikrant0207](https://github.com/Vikrant0207)
+
+---
+
+## 📞 Support & Community
+
+### 🆘 Need Help?
+- 💬 **Discussions**: [GitHub Discussions](https://github.com/thetechguardians/Climate-Shield/discussions)
+- 🐛 **Bug Reports**: [Open an Issue](https://github.com/thetechguardians/Climate-Shield/issues)
+- 📧 **Discord**: [Join Discord Server](https://discord.gg/VH5MVsFdJF)
+
+### 🌟 Stay Connected
+- 📱 **Instagram**: [@vikrant.__07](https://www.instagram.com/vikrant.__07/)
+- 💼 **LinkedIn**: [Vikrant Kumar Mehta](www.linkedin.com/in/vikrant-kumar-mehta)
+- 🐙 **GitHub**: [@Vikrant0207](https://github.com/Vikrant0207)
 
 ---
 
@@ -399,12 +416,14 @@ for communities, students, researchers, and emergency responders.
 
 ---
 
-# ⭐ Support
+# ⭐ Show Your Support
 
-If you like this project:
+If this project helped you, please consider:
+- ⭐ **Starring** this repository
+- 🍴 **Forking** it to contribute
+- 📢 **Sharing** it with others
+- 💖 **Following** for more amazing projects
+- 🛠 **Contribute** improvements
 
-* ⭐ Star the repository
-* 🍴 Fork the project
-* 🛠 Contribute improvements
-
+---
 ---
