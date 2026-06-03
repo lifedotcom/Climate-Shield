@@ -9,8 +9,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+
+    <!-- Backend base URL for API calls (set this to your Flask/Gunicorn Render service URL) -->
+    <script>
+        // Example: window.__BACKEND_URL__ = "https://climate-shield-backend.onrender.com";
+        window.__BACKEND_URL__ = window.__BACKEND_URL__ || "";
+    </script>
 </head>
 <body>
+
 
     <div class="ambient-glow"></div>
     <div class="grid-texture"></div>

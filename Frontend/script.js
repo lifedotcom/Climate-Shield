@@ -24,10 +24,27 @@ if (window.Chart) {
 // ==========================================
 // Your Original Weather API Logic
 // ==========================================
-const API_URL =
-    window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost"
-        ? "http://127.0.0.1:5000/weather"
-        : window.location.origin + "/weather";
+function resolveApiUrl(){
+    // Prefer explicit backend URL injected by the HTML page.
+    // Set window.__BACKEND_URL__ to your Flask/Gunicorn service base URL in production.
+    if (window.__BACKEND_URL__ && typeof window.__BACKEND_URL__ === 'string' && window.__BACKEND_URL__.trim() !== '') {
+        return window.__BACKEND_URL__.replace(/\/+$/, '') + '/weather';
+    }
+
+    // Local dev fallback.
+    if (window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost") {
+        return "http://127.0.0.1:5000/weather";
+    }
+
+
+    // Production fallback: assume backend is reachable at same origin.
+    // This is correct only when frontend and backend are served by the same host.
+    return window.location.origin + "/weather";
+}
+
+
+const API_URL = resolveApiUrl();
+
 
 async function getWeatherData(){
     const city = document.getElementById("city").value;
