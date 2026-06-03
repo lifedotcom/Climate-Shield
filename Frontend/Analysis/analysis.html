@@ -144,8 +144,20 @@
                         </div>
                     </div>
 
-                    <button onclick="getWeatherData()">Analyze Climate Risk</button>
+                   <div class="button-group">
 
+    <button id="analyze-btn" onclick="getWeatherData()">
+        Analyze Climate Risk
+    </button>
+    <button type="button" onclick="useCurrentLocation()">
+    Use Current Location
+    </button>
+
+    <button class="clear-btn" onclick="clearResults()">
+        Clear All
+    </button>
+
+</div>
                     <div id="loading" class="loading hidden">
                         Analyzing live weather data...
                     </div>
@@ -308,6 +320,23 @@
                 <a href="#analysis-form">Analysis</a>
                 <a href="#results">Results</a>
             </div>
+           <div class="contact-section">
+        <strong>Contact & Support</strong>
+
+        <div class="contact-links">
+            <a href="https://github.com/thetechguardians/Climate-Shield" target="_blank">
+                GitHub Repository
+            </a>
+
+            <a href="https://github.com/thetechguardians/Climate-Shield/issues" target="_blank">
+                Report an Issue
+            </a>
+
+            <a href="https://github.com/thetechguardians/Climate-Shield/discussions" target="_blank">
+                GitHub Discussions
+            </a>
+        </div>
+    </div>
         </footer>
 
         <button id="chatbot-toggle" class="chatbot-toggle" type="button" aria-controls="chatbot-panel" aria-expanded="false" aria-label="Open ClimateBot" title="Open ClimateBot">
