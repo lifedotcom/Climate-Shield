@@ -581,6 +581,18 @@ document.addEventListener("DOMContentLoaded", () => {
         setTimeout(typeWriter, 400);
     }
 
+    // Image carousel effect for analysis.html
+    const carouselImages = document.querySelectorAll(".hero-image-carousel .carousel-img");
+    if (carouselImages.length > 0) {
+        let currentImageIndex = 0;
+        
+        setInterval(() => {
+            carouselImages[currentImageIndex].classList.remove("active");
+            currentImageIndex = (currentImageIndex + 1) % carouselImages.length;
+            carouselImages[currentImageIndex].classList.add("active");
+        }, 5000);
+    }
+
     // Default India Chart
     if (typeof fetchAndRenderChart === 'function') {
         fetchAndRenderChart(20.5937, 78.9629);

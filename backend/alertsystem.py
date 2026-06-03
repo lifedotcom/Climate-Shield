@@ -77,94 +77,48 @@ def get_weather_insights():
                 "message": "Please fill all fields."
             }), 400
 
-        api_key = os.environ.get("OPENWEATHER_API_KEY")
-
-        if not api_key:
-            print("OPENWEATHER_API_KEY missing")
-
-            return jsonify({
-                "success": False,
-                "message": "Weather service configuration error."
-            }), 500
-
 # ----------------------------------------------------
 # STEP 1: Convert city → coordinates
 # ----------------------------------------------------
 
         geo_response = requests.get(
-            "https://api.openweathermap.org/geo/1.0/direct",
-            params={
-                "q": f"{city},{state},{country}",
-                "limit": 1,
-                "appid": api_key
-            },
+            f"https://geocoding-api.open-meteo.com/v1/search?name={city}&count=1",
             timeout=15
         )
-
         geo_response.raise_for_status()
+        geo_data_response = geo_response.json()
 
-        geo_data = geo_response.json()
-
-        if not geo_data:
+        if not geo_data_response.get("results"):
             return jsonify({
                 "success": False,
                 "message": "Location not found."
             }), 404
 
-        lat = geo_data[0]["lat"]
-        lon = geo_data[0]["lon"]
+        lat = geo_data_response["results"][0]["latitude"]
+        lon = geo_data_response["results"][0]["longitude"]
+        resolved_city = geo_data_response["results"][0].get("name", city)
+        resolved_state = geo_data_response["results"][0].get("admin1", state)
+        resolved_country = geo_data_response["results"][0].get("country", country)
 
         # ----------------------------------------------------
-        # STEP 2: Current weather
+        # STEP 2 & 3: Current weather and Forecast
         # ----------------------------------------------------
 
-        weather_response = requests.get(
-            "https://api.openweathermap.org/data/2.5/weather",
-            params={
-                "lat": lat,
-                "lon": lon,
-                "units": "metric",
-                "appid": api_key
-            },
-            timeout=15
+        weather_url = (
+            f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}"
+            "&current=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m"
+            "&daily=temperature_2m_max,precipitation_sum,wind_speed_10m_max"
+            "&timezone=auto"
         )
-
+        weather_response = requests.get(weather_url, timeout=15)
         weather_response.raise_for_status()
-
         weather_data = weather_response.json()
 
-        temp_val = weather_data["main"]["temp"]
-        humid_val = weather_data["main"]["humidity"]
-
-        wind_val = round(
-            weather_data["wind"]["speed"] * 3.6,
-            1
-        )
-
-        rain_val = (
-            weather_data.get("rain", {}).get("1h")
-            or weather_data.get("rain", {}).get("3h")
-            or 0
-        )
-
-        # ----------------------------------------------------
-        # STEP 3: Forecast
-        # ----------------------------------------------------
-
-        forecast_response = requests.get(
-            "https://api.openweathermap.org/data/2.5/forecast",
-            params={
-                "lat": lat,
-                "lon": lon,
-                "units": "metric",
-                "appid": api_key
-            },
-            timeout=15
-        )
-
-        forecast_response.raise_for_status()
-
-        forecast_data = forecast_response.json()
+        current = weather_data.get("current", {})
+        temp_val = current.get("temperature_2m", 0)
+        humid_val = current.get("relative_humidity_2m", 50)
+        wind_val = current.get("wind_speed_10m", 0)
+        rain_val = current.get("precipitation", 0)
 
         # ----------------------------------------------------
         # RISK CALCULATIONS
@@ -268,30 +222,24 @@ def get_weather_insights():
         # ----------------------------------------------------
 
         forecast = []
+        daily = weather_data.get("daily", {})
+        times = daily.get("time", [])
+        temps = daily.get("temperature_2m_max", [])
+        rains = daily.get("precipitation_sum", [])
+        winds = daily.get("wind_speed_10m_max", [])
 
-        forecast_items = forecast_data.get("list", [])
-
-        for item in forecast_items[::8][:5]:
-
-            day_temp = item["main"]["temp"]
-            day_humidity = item["main"]["humidity"]
-
-            day_rain = (
-                item.get("rain", {})
-                .get("3h", 0)
-            )
-
-            day_wind = round(
-                item["wind"]["speed"] * 3.6,
-                1
-            )
+        for i in range(min(5, len(times))):
+            day_temp = temps[i] if i < len(temps) else temp_val
+            day_humidity = humid_val # Open-Meteo doesn't easily provide daily humidity, use current
+            day_rain = rains[i] if i < len(rains) else 0
+            day_wind = winds[i] if i < len(winds) else wind_val
 
             forecast.append({
-                "date": item["dt_txt"],
+                "date": times[i],
                 "temperature": round(day_temp, 1),
                 "humidity": day_humidity,
                 "rainfall": round(day_rain, 1),
-                "wind_speed": day_wind,
+                "wind_speed": round(day_wind, 1),
                 "risks": {
                     "flood_risk": round(
                         min(
@@ -353,9 +301,9 @@ def get_weather_insights():
             "success": True,
 
             "location": {
-                "city": geo_data[0].get("name", city),
-                "state": geo_data[0].get("state", state),
-                "country": geo_data[0].get("country", country),
+                "city": resolved_city,
+                "state": resolved_state,
+                "country": resolved_country,
                 "latitude": lat,
                 "longitude": lon
             },
@@ -414,18 +362,8 @@ def reverse_geocode():
                 "Latitude and longitude are required."
             })
 
-        api_key = os.environ.get(
-            "OPENWEATHER_API_KEY"
-        )
-
         response = requests.get(
-            "https://api.openweathermap.org/geo/1.0/reverse",
-            params={
-                "lat": latitude,
-                "lon": longitude,
-                "limit": 1,
-                "appid": api_key
-            },
+            f"https://api.bigdatacloud.net/data/reverse-geocode-client?latitude={latitude}&longitude={longitude}&localityLanguage=en",
             timeout=20
         )
 
@@ -439,29 +377,18 @@ def reverse_geocode():
 
         result = response.json()
 
-        if not result:
-
+        if not result or not result.get("city"):
             return jsonify({
                 "success": False,
                 "message":
                 "Location not found."
             })
 
-        location = result[0]
-
         return jsonify({
-
             "success": True,
-
-            "city":
-            location.get("name", ""),
-
-            "state":
-            location.get("state", ""),
-
-            "country":
-            location.get("country", "")
-
+            "city": result.get("city", ""),
+            "state": result.get("principalSubdivision", ""),
+            "country": result.get("countryName", "")
         })
 
     except Exception:
@@ -471,6 +398,27 @@ def reverse_geocode():
             "message":
             "Reverse geocoding failed."
         })
+
+# =========================================================
+# GIS ALERT DATA (For tests)
+# =========================================================
+
+def fetch_gis_alert_data():
+    """
+    Fetches active alerts for the GIS map.
+    Returns a tuple of (response_dict, status_code).
+    """
+    try:
+        # Placeholder endpoint for GIS alert data
+        resp = requests.get("https://api.weather.gov/alerts/active", timeout=10)
+        resp.raise_for_status()
+        return resp.json(), 200
+    except requests.exceptions.ConnectionError:
+        return {"success": False, "message": "Service Unavailable"}, 503
+    except requests.exceptions.Timeout:
+        return {"success": False, "message": "Gateway Timeout"}, 504
+    except Exception as e:
+        return {"success": False, "message": str(e)}, 500
 
 # =========================================================
 # CHATBOT API
