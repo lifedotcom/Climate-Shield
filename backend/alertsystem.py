@@ -368,11 +368,21 @@ def get_weather_insights():
             },
 
             "risks": {
-                "flood_risk": round(flood_risk_metric, 3),
-                "heat_risk": round(heat_risk_metric, 3),
-                "wildfire_risk": round(wildfire_risk_metric, 3),
-                "cyclone_risk": round(cyclone_risk_metric, 3),
-                "drought_risk": round(drought_risk_metric, 3)
+    "flood_risk": round(flood_risk_metric, 3),
+    "flood_risk_confidence": round(flood_risk_metric * 100, 1),
+    "flood_risk_level": "HIGH" if flood_risk_metric >= 0.6 else "MEDIUM" if flood_risk_metric >= 0.3 else "LOW",
+    "heat_risk": round(heat_risk_metric, 3),
+    "heat_risk_confidence": round(heat_risk_metric * 100, 1),
+    "heat_risk_level": "HIGH" if heat_risk_metric >= 0.6 else "MEDIUM" if heat_risk_metric >= 0.3 else "LOW",
+    "wildfire_risk": round(wildfire_risk_metric, 3),
+    "wildfire_risk_confidence": round(wildfire_risk_metric * 100, 1),
+    "wildfire_risk_level": "HIGH" if wildfire_risk_metric >= 0.6 else "MEDIUM" if wildfire_risk_metric >= 0.3 else "LOW",
+    "cyclone_risk": round(cyclone_risk_metric, 3),
+    "cyclone_risk_confidence": round(cyclone_risk_metric * 100, 1),
+    "cyclone_risk_level": "HIGH" if cyclone_risk_metric >= 0.6 else "MEDIUM" if cyclone_risk_metric >= 0.3 else "LOW",
+    "drought_risk": round(drought_risk_metric, 3),
+    "drought_risk_confidence": round(drought_risk_metric * 100, 1),
+"drought_risk_level": "HIGH" if drought_risk_metric >= 0.6 else "MEDIUM" if drought_risk_metric >= 0.3 else "LOW",
             },
 
             "forecast": forecast,
