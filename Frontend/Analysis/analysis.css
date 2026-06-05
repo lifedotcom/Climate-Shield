@@ -599,11 +599,16 @@ button:hover {
 
 .risk-card {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
 }
 
-.risk-card p {
+.risk-card > p:not(.risk-label):not(.risk-description) {
   font-size: 1.8rem;
   font-weight: 800;
+  margin: 0;
 }
 
 .flood {
@@ -1035,8 +1040,8 @@ button:hover {
 /* MULTI-RISK GRID (5 CARDS) */
 .risk-grid-five {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
   margin-bottom: 22px;
 }
 
@@ -1291,10 +1296,12 @@ button:hover {
   transition: all 0.2s ease;
   animation: fadeIn 0.25s ease;
 }
+
 .log-entry:hover {
   transform: translateY(-2px);
   background: rgba(255, 255, 255, 0.07);
 }
+
 .log-entry.success {
   border-left-color: #22c55e;
   color: #86efac;
@@ -1398,15 +1405,19 @@ button:hover {
   .report-main-grid {
     grid-template-columns: 1fr;
   }
+
   .map-card-wrapper {
     min-height: 320px;
   }
+
   .forecast-cards-container {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+
   .charts-wrapper {
     grid-template-columns: 1fr;
   }
+
   .alerts-center-section {
     grid-template-columns: 1fr;
   }
@@ -1416,9 +1427,11 @@ button:hover {
   .forecast-cards-container {
     grid-template-columns: 1fr;
   }
+
   .subscribe-inputs {
     grid-template-columns: 1fr;
   }
+
   .risk-grid-five {
     grid-template-columns: 1fr 1fr;
   }
@@ -1506,4 +1519,139 @@ button:hover {
 
 .search-chip:hover {
   background: rgba(255, 255, 255, 0.22);
+}
+.theme-toggle {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  max-width: 42px;
+
+  padding: 0;
+  border: none;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+
+  font-size: 20px;
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+body.light-theme {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+body.light-theme .glass-card,
+body.light-theme .navbar,
+body.light-theme .result-card,
+body.light-theme .sidebar,
+body.light-theme .map-card {
+  background: rgba(255, 255, 255, 0.9);
+  color: #0f172a;
+}
+
+body.light-theme input {
+  background: #ffffff;
+  color: #0f172a;
+  border-color: #cbd5e1;
+}
+
+body.light-theme label,
+body.light-theme h1,
+body.light-theme h2,
+body.light-theme h3,
+body.light-theme p {
+  color: #0f172a;
+}
+
+body.light-theme .theme-toggle {
+  background: #111827;
+  color: #ffffff;
+}
+body.light-theme .toggle-history-btn {
+  background: #e5e7eb;
+  color: #111827;
+  border: 1px solid #cbd5e1;
+}
+
+body.light-theme .clear-history-btn,
+body.light-theme .clear-btn {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+}
+
+body.light-theme .clear-history-btn:hover,
+body.light-theme .clear-btn:hover {
+  background: #fecaca;
+  color: #7f1d1d;
+}
+body.light-theme .eyebrow {
+  background: #dbeafe;
+  color: #075985;
+  border: 1px solid #7dd3fc;
+}
+body.light-theme .alert-success,
+body.light-theme .success-message,
+body.light-theme .status-success,
+body.light-theme .alert-box.success {
+  background: #beefcf;
+  border: 1px solid #27c260;
+  color: #166534 !important;
+}
+
+body.light-theme .alert-success *,
+body.light-theme .success-message *,
+body.light-theme .status-success *,
+body.light-theme .alert-box.success *,
+body.light-theme .reults-kicker * {
+  color: #166534 !important;
+}
+#scrollTopBtn,
+.scroll-top-btn {
+  position: fixed !important;
+  right: 31px !important;
+  bottom: 96px !important;
+
+  width: 52px !important;
+  height: 52px !important;
+  min-width: 52px !important;
+  max-width: 52px !important;
+
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 50% !important;
+
+  display: none;
+  align-items: center !important;
+  justify-content: center !important;
+
+  font-size: 22px !important;
+  z-index: 9999;
+}
+#chatbot-toggle,
+.chatbot-toggle,
+.chatbot-btn {
+  position: fixed !important;
+  right: 24px !important;
+  bottom: 24px !important;
+
+  width: 64px !important;
+  height: 64px !important;
+  min-width: 64px !important;
+  max-width: 64px !important;
+
+  border-radius: 50% !important;
+  z-index: 9999;
 }
