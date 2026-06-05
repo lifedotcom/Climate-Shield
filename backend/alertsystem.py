@@ -1,6 +1,10 @@
 import os
 import requests
 
+from dotenv import load_dotenv
+
+load_dotenv()
+
 from flask import (
     Flask,
     jsonify,
@@ -316,11 +320,21 @@ def get_weather_insights():
             },
 
             "risks": {
-                "flood_risk": round(flood_risk_metric, 3),
-                "heat_risk": round(heat_risk_metric, 3),
-                "wildfire_risk": round(wildfire_risk_metric, 3),
-                "cyclone_risk": round(cyclone_risk_metric, 3),
-                "drought_risk": round(drought_risk_metric, 3)
+    "flood_risk": round(flood_risk_metric, 3),
+    "flood_risk_confidence": round(flood_risk_metric * 100, 1),
+    "flood_risk_level": "HIGH" if flood_risk_metric >= 0.6 else "MEDIUM" if flood_risk_metric >= 0.3 else "LOW",
+    "heat_risk": round(heat_risk_metric, 3),
+    "heat_risk_confidence": round(heat_risk_metric * 100, 1),
+    "heat_risk_level": "HIGH" if heat_risk_metric >= 0.6 else "MEDIUM" if heat_risk_metric >= 0.3 else "LOW",
+    "wildfire_risk": round(wildfire_risk_metric, 3),
+    "wildfire_risk_confidence": round(wildfire_risk_metric * 100, 1),
+    "wildfire_risk_level": "HIGH" if wildfire_risk_metric >= 0.6 else "MEDIUM" if wildfire_risk_metric >= 0.3 else "LOW",
+    "cyclone_risk": round(cyclone_risk_metric, 3),
+    "cyclone_risk_confidence": round(cyclone_risk_metric * 100, 1),
+    "cyclone_risk_level": "HIGH" if cyclone_risk_metric >= 0.6 else "MEDIUM" if cyclone_risk_metric >= 0.3 else "LOW",
+    "drought_risk": round(drought_risk_metric, 3),
+    "drought_risk_confidence": round(drought_risk_metric * 100, 1),
+"drought_risk_level": "HIGH" if drought_risk_metric >= 0.6 else "MEDIUM" if drought_risk_metric >= 0.3 else "LOW",
             },
 
             "forecast": forecast,
@@ -399,6 +413,7 @@ def reverse_geocode():
             "Reverse geocoding failed."
         })
 
+
 # =========================================================
 # GIS ALERT DATA (For tests)
 # =========================================================
@@ -435,6 +450,25 @@ def chatbot():
             "message",
             ""
         ).lower()
+
+        context = data.get("context", {})
+
+        flood_risk = context.get(
+            "flood_risk",
+            0
+        )
+
+        heat_risk = context.get(
+            "heat_risk",
+            0
+        )
+
+        location = context.get(
+            "location",
+            "your area"
+        )
+
+        warning = ""
 
         # Try using Gemini API if key is available
         gemini_api_key = os.environ.get("GEMINI_API_KEY")
@@ -474,22 +508,65 @@ def chatbot():
             "Climate change increases the frequency of extreme weather events.",
 
             "rain":
-            "Heavy rainfall may increase flood risks in vulnerable regions."
+            "Heavy rainfall may increase flood risks in vulnerable regions.",
+
+            "drought":
+            "Droughts occur when rainfall is significantly below normal levels. Conserve water and follow local water restrictions.",
+
+            "wildfire":
+            "Wildfires spread rapidly in hot, dry conditions. Follow evacuation orders and avoid smoke exposure.",
+
+            "landslide":
+            "Landslides can occur after heavy rainfall or earthquakes. Avoid steep slopes and follow local warnings."
+        
         }
 
         for key in responses:
 
             if key in message:
 
+                if flood_risk > 0.5:
+
+                    warning = (
+                        f"⚠ High Flood Risk detected in {location}. "
+                        "Avoid low-lying areas and follow local alerts.\n\n"
+                    )
+
+                elif heat_risk > 0.5:
+
+                    warning = (
+                        f"🔥 High Heatwave Risk detected in {location}. "
+                        "Stay hydrated and avoid prolonged outdoor exposure.\n\n"
+                    )
+
                 return jsonify({
                     "success": True,
-                    "response": responses[key]
+                    "response": warning + responses[key]
                 })
+
+        default_response = (
+            "ClimateBot is ready to help with floods, cyclones, heatwaves, and climate safety."
+        )
+
+        if flood_risk > 0.5:
+
+            default_response = (
+                f"⚠ High Flood Risk detected in {location}. "
+                "Avoid low-lying areas and follow local alerts.\n\n"
+                + default_response
+            )
+
+        elif heat_risk > 0.5:
+
+            default_response = (
+                f"🔥 High Heatwave Risk detected in {location}. "
+                "Stay hydrated and avoid prolonged outdoor exposure.\n\n"
+                + default_response
+            )
 
         return jsonify({
             "success": True,
-            "response":
-            "ClimateBot is ready to help with floods, cyclones, heatwaves, and climate safety."
+            "response": default_response
         })
 
     except Exception:
