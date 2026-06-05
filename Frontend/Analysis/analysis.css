@@ -1655,3 +1655,17 @@ body.light-theme .reults-kicker * {
   border-radius: 50% !important;
   z-index: 9999;
 }
+body.light-theme #recent-search-list {
+  background: transparent;
+}
+
+body.light-theme .search-chip {
+  background: #e0f2fe;
+  color: #075985;
+  border: 1px solid #7dd3fc;
+}
+
+body.light-theme .search-chip:hover {
+  background: #bae6fd;
+  color: #0c4a6e;
+}
