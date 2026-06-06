@@ -332,13 +332,17 @@ def generate_response(user_input, context_summary=""):
 
         "Could you explain that differently?",
 
-        "That's interesting. Tell me more.",
+        "Could you be more specific?",
 
         "I understand partially. Can you elaborate?",
 
-        "Climate systems are complex and interconnected.",
+        "That topic seems outside my current scope. I can best assist you with queries reelated to climate ssytems",
 
-        "Weather patterns are changing rapidly worldwide."
+        "I am afraid I can't help you with this topic, but I would love answer your questions related to climate hazards.",
+
+        "Please select one of the above mentioned topics.",
+
+        "Try asking me a question from these topics- flood, cyclone, wildfire, heatwave." 
     ]
 
     return random.choice(smart_responses)
