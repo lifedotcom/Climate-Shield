@@ -100,9 +100,7 @@ async function getWeatherData() {
     return;
   }
 
-  loading.classList.remove("hidden");
-  analyzeBtn.disabled = true;
-  analyzeBtn.textContent = "Analyzing...";
+  loading.classList.add("hidden");
 
   hideMessage();
   results.classList.add("hidden");
@@ -617,13 +615,13 @@ const primaryScore = primaryRisk[1];
     resultSummary.innerText =
       "Live weather and risk analysis generated successfully.";
     statusPill.innerText = "Analysis Complete";
-  } catch (error) {
+} catch (error) {
     console.error(error);
     loading.classList.add("hidden");
+    showMessage("Backend server is not running.", "is-error");
+  } finally {
     analyzeBtn.disabled = false;
     analyzeBtn.textContent = "Analyze Climate Risk";
-
-    showMessage("Backend server is not running.", "is-error");
   }
 }
 
