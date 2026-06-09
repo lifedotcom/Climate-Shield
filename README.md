@@ -426,12 +426,7 @@ Developed by Team Climate Shield.
 - 📧 **Discord**: [Join Discord Server](https://discord.gg/VH5MVsFdJF)
 
 ### 🌟 Stay Connected
-<<<<<<< HEAD
-
-- 📱 **Instagram**: [@vikrant.\_\_07](https://www.instagram.com/vikrant.__07/)
-=======
 - 📱 **Instagram**: [@vikrant.__07](https://www.instagram.com/vikrant.__07/)
->>>>>>> be9481035463cc8e4462300a9192b564c1c5142e
 - 💼 **LinkedIn**: [Vikrant Kumar Mehta](https://www.linkedin.com/in/vikrant-kumar-mehta)
 - 🐙 **GitHub**: [@Vikrant0207](https://github.com/Vikrant0207)
 
