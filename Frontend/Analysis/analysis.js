@@ -1,6 +1,6 @@
 const API_URL =
   window.location.hostname === "127.0.0.1" ||
-    window.location.hostname === "localhost"
+  window.location.hostname === "localhost"
     ? "http://127.0.0.1:5000/weather"
     : window.location.origin + "/weather";
 
@@ -321,15 +321,25 @@ const recommendationsPanel = document.getElementById(
 
     if (!mapInstance) {
       mapInstance = L.map("map").setView([lat, lon], 10);
-      L.tileLayer(
-        "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
-        {
-          attribution:
-            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
-          subdomains: "abcd",
-          maxZoom: 20,
-        },
+
+      // Theme-aware tile layers
+      const darkTile  = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+      const lightTile = 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+
+      const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+      let tileLayer = L.tileLayer(
+        currentTheme === 'light' ? lightTile : darkTile,
+        { attribution: '© OpenStreetMap © CARTO', maxZoom: 19 }
       ).addTo(mapInstance);
+
+      // Swap tile layer when theme changes
+      window.addEventListener('themechange', function (e) {
+        tileLayer.remove();
+        tileLayer = L.tileLayer(
+          e.detail.theme === 'light' ? lightTile : darkTile,
+          { attribution: '© OpenStreetMap © CARTO', maxZoom: 19 }
+        ).addTo(mapInstance);
+      });
     } else {
       mapInstance.setView([lat, lon], 10);
       // Clear old layers (except the base tile layer)
@@ -585,32 +595,32 @@ const primaryScore = primaryRisk[1];
     // Generate Dispatch Logs
     dispatchLogsBox.innerHTML = "";
     const addLog = (msg, tone) => {
-      const timeStr = new Date().toLocaleTimeString();
+  const timeStr = new Date().toLocaleTimeString();
 
-      const badgeMap = {
-        success: {
-          label: "INFO",
-          className: "badge-info",
-          icon: "🛡️",
-        },
-        warning: {
-          label: "WARNING",
-          className: "badge-warning",
-          icon: "⚠️",
-        },
-        critical: {
-          label: "CRITICAL",
-          className: "badge-critical",
-          icon: "🚨",
-        },
-      };
+  const badgeMap = {
+    success: {
+      label: "INFO",
+      className: "badge-info",
+      icon: "🛡️",
+    },
+    warning: {
+      label: "WARNING",
+      className: "badge-warning",
+      icon: "⚠️",
+    },
+    critical: {
+      label: "CRITICAL",
+      className: "badge-critical",
+      icon: "🚨",
+    },
+  };
 
-      const config = badgeMap[tone];
+  const config = badgeMap[tone];
 
-      const entry = document.createElement("div");
-      entry.className = `log-entry ${tone}`;
+  const entry = document.createElement("div");
+  entry.className = `log-entry ${tone}`;
 
-      entry.innerHTML = `
+  entry.innerHTML = `
     <div class="log-header">
       <span class="log-badge ${config.className}">
         ${config.icon} ${config.label}
@@ -623,8 +633,8 @@ const primaryScore = primaryRisk[1];
     </div>
   `;
 
-      dispatchLogsBox.appendChild(entry);
-    };
+  dispatchLogsBox.appendChild(entry);
+};
 
     addLog(
       `Monitoring node activated at Lat ${lat.toFixed(4)}, Lon ${lon.toFixed(4)}`,
@@ -743,7 +753,7 @@ window.useCurrentLocation = async function () {
       try {
         const reverseGeocodeUrl =
           window.location.hostname === "127.0.0.1" ||
-            window.location.hostname === "localhost"
+          window.location.hostname === "localhost"
             ? "http://127.0.0.1:5000/reverse-geocode"
             : window.location.origin + "/reverse-geocode";
 
@@ -846,19 +856,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const toggleBtn = document.getElementById("toggle-history-btn");
   const wrapper = document.getElementById("recent-search-wrapper");
   const clearBtn = document.getElementById("clear-history-btn");
-  const themeToggle = document.getElementById("theme-toggle");
-
-  if (themeToggle) {
-    themeToggle.addEventListener("click", () => {
-      document.body.classList.toggle("light-theme");
-
-      if (document.body.classList.contains("light-theme")) {
-        themeToggle.innerText = "☀";
-      } else {
-        themeToggle.innerText = "☾";
-      }
-    });
-  }
+  // Theme is controlled by theme.js via data-theme attribute on <html>.
+  // No duplicate listener needed here.
   if (toggleBtn && wrapper) {
     toggleBtn.addEventListener("click", () => {
       wrapper.classList.toggle("show-history");
