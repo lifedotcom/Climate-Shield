@@ -457,7 +457,9 @@ async function getWeatherData() {
             </div>
         `,
       )
-      .openPopup();
+      mapInstance.once("moveend", () => {
+        mapMarker.openPopup();
+      });
 
     // Render 5-Day Forecast
     const forecastContainer = document.getElementById(
