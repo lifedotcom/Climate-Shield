@@ -1027,9 +1027,9 @@ button:hover {
     width: 100%;
   }
 .navbar{
-    display:flex;
+    
+  display:flex;
     position: fixed;
-    flex-direction: row;
     align-items: center;
     align-content: center;
     justify-content: center;
