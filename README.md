@@ -421,9 +421,9 @@ Developed by Team Climate Shield.
 
 ### 🆘 Need Help?
 
-- 💬 **Discussions**: [GitHub Discussions](https://github.com/thetechguardians/Climate-Shield/discussions)
-- 🐛 **Bug Reports**: [Open an Issue](https://github.com/thetechguardians/Climate-Shield/issues)
-- 📧 **Discord**: [Join Discord Server](https://discord.gg/VH5MVsFdJF)
+- 💬 **Discussions**:   [GitHub Discussions](https://github.com/thetechguardians/Climate-Shield/discussions)
+- 🐛 **Bug Reports**:   [Open an Issue](https://github.com/thetechguardians/Climate-Shield/issues)
+- 📧 **Discord**:       [Join Discord Server](https://discord.gg/VH5MVsFdJF)
 
 ### 🌟 Stay Connected
 - 📱 **Instagram**: [@vikrant.__07](https://www.instagram.com/vikrant.__07/)
